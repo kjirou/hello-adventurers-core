@@ -1,0 +1,21 @@
+{
+  "name": "hello-adventurers-core",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "prettier:check": "prettier --check .",
+    "prettier:write": "prettier --write .",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
+  },
+  "keywords": [],
+  "author": "kjirou",
+  "license": "SEE LICENSE IN LICENSE",
+  "devDependencies": {
+    "@types/node": "^22.5.1",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
+}
