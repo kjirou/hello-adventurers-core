@@ -101,6 +101,7 @@ export type JobData = Readonly<{
    * - その職業のクリーチャーは必ずこの専門を持つ
    */
   mainExpertiseId: ExpertiseData["id"];
+  name: string;
   stats?: Partial<Stats>;
   /**
    * 副専門群
@@ -122,6 +123,7 @@ export type JobData = Readonly<{
 export type RaceData = Readonly<{
   expertiseIds?: ExpertiseData[];
   id: string;
+  name: string;
   stats?: Partial<Stats>;
 }>;
 
