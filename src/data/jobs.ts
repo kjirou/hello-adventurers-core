@@ -5,6 +5,7 @@ import { JobData } from "../types";
 export const jobsAsConst = [
   {
     id: "fighter",
+    description: "",
     name: "Fighter",
     mainExpertiseId: "",
     stats: {},

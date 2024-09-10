@@ -38,7 +38,7 @@ export type AbilityScores = Readonly<{
 export type Stats = Readonly<{
   actionPointsPerTurn: Extract<StatTemplate, { kind: "integer" }>;
   maxActionPoints: Extract<StatTemplate, { kind: "integer" }>;
-  maxHp: Extract<StatTemplate, { kind: "integer" }>;
+  maxHpRate: Extract<StatTemplate, { kind: "rate" }>;
   magicalAttack: Extract<StatTemplate, { kind: "integer" }>;
   magicalDefense: Extract<StatTemplate, { kind: "integer" }>;
   physicalAttack: Extract<StatTemplate, { kind: "integer" }>;
@@ -93,6 +93,7 @@ export type ExpertiseData = Readonly<{
  * 職業データ定義
  */
 export type JobData = Readonly<{
+  description: string;
   id: string;
   /**
    * 主専門
@@ -121,6 +122,7 @@ export type JobData = Readonly<{
  * 種族データ定義
  */
 export type RaceData = Readonly<{
+  description: string;
   expertiseIds?: ExpertiseData[];
   id: string;
   name: string;
