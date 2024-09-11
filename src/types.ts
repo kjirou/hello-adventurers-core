@@ -26,7 +26,48 @@ export type StatTemplate = Readonly<
   | { kind: "negativeFlag"; default: boolean; value: number }
   | { kind: "positiveFlag"; default: boolean; value: number }
   | { kind: "rate"; default: number; range: RangedNumber; value: number }
-  | { kind: "rateReduction"; default: number; value: number }
+  | { kind: "reductionRate"; default: number; value: number }
+>;
+
+export type StatData = Readonly<
+  {
+    id: string;
+    name: string;
+    shortName: string;
+  } & (
+    | {
+        kind: "chance";
+        default: number;
+        value: number;
+      }
+    | {
+        kind: "everyFlag";
+        default: boolean;
+        value: boolean;
+      }
+    | {
+        kind: "integer";
+        default: number;
+        range: RangedNumber;
+        value: number;
+      }
+    | {
+        kind: "someFlag";
+        default: boolean;
+        value: boolean;
+      }
+    | {
+        kind: "rate";
+        default: number;
+        range: RangedNumber;
+        value: number;
+      }
+    | {
+        kind: "reductionRate";
+        default: number;
+        value: number;
+      }
+  )
 >;
 
 export type AbilityScores = Readonly<{
@@ -39,10 +80,10 @@ export type Stats = Readonly<{
   actionPointsPerTurn: Extract<StatTemplate, { kind: "integer" }>;
   maxActionPoints: Extract<StatTemplate, { kind: "integer" }>;
   maxHpRate: Extract<StatTemplate, { kind: "rate" }>;
-  magicalAttack: Extract<StatTemplate, { kind: "integer" }>;
-  magicalDefense: Extract<StatTemplate, { kind: "integer" }>;
-  physicalAttack: Extract<StatTemplate, { kind: "integer" }>;
-  physicalDefense: Extract<StatTemplate, { kind: "integer" }>;
+  magicalAttackRate: Extract<StatTemplate, { kind: "rate" }>;
+  magicalDefenseRate: Extract<StatTemplate, { kind: "reductionRate" }>;
+  physicalAttackRate: Extract<StatTemplate, { kind: "rate" }>;
+  physicalDefenseRate: Extract<StatTemplate, { kind: "reductionRate" }>;
 }>;
 
 /**
