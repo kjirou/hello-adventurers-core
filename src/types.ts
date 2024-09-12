@@ -37,35 +37,23 @@ export type StatData = Readonly<
   } & (
     | {
         kind: "chance";
-        default: number;
-        value: number;
       }
     | {
         kind: "everyFlag";
-        default: boolean;
-        value: boolean;
       }
     | {
         kind: "integer";
-        default: number;
         range: RangedNumber;
-        value: number;
       }
     | {
         kind: "someFlag";
-        default: boolean;
-        value: boolean;
       }
     | {
         kind: "rate";
-        default: number;
         range: RangedNumber;
-        value: number;
       }
     | {
         kind: "reductionRate";
-        default: number;
-        value: number;
       }
   )
 >;
@@ -76,14 +64,14 @@ export type AbilityScores = Readonly<{
   strength: Extract<StatTemplate, { kind: "integer" }>;
 }>;
 
-export type Stats = Readonly<{
-  actionPointsPerTurn: Extract<StatTemplate, { kind: "integer" }>;
-  maxActionPoints: Extract<StatTemplate, { kind: "integer" }>;
-  maxHpRate: Extract<StatTemplate, { kind: "rate" }>;
-  magicalAttackRate: Extract<StatTemplate, { kind: "rate" }>;
-  magicalDefenseRate: Extract<StatTemplate, { kind: "reductionRate" }>;
-  physicalAttackRate: Extract<StatTemplate, { kind: "rate" }>;
-  physicalDefenseRate: Extract<StatTemplate, { kind: "reductionRate" }>;
+export type StatModifiers = Readonly<{
+  actionPointsPerTurn: { value: number };
+  maxActionPoints: { value: number };
+  maxHpRate: { value: number };
+  magicalAttackRate: { value: number };
+  magicalDefenseRate: { value: number };
+  physicalAttackRate: { value: number };
+  physicalDefenseRate: { value: number };
 }>;
 
 /**
@@ -127,7 +115,7 @@ export type ExpertiseData = Readonly<{
     SkillData["id"],
     SkillData["id"],
   ];
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
@@ -144,7 +132,7 @@ export type JobData = Readonly<{
    */
   mainExpertiseId: ExpertiseData["id"];
   name: string;
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
   /**
    * 副専門群
    *
@@ -167,18 +155,18 @@ export type RaceData = Readonly<{
   expertiseIds?: ExpertiseData[];
   id: string;
   name: string;
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
- * 状態修正データ定義
+ * 状態変化データ定義
  *
  * - いわゆるバフ・デバフ
  */
-export type ModifierData = Readonly<{
+export type StateChangeData = Readonly<{
   abilityScores?: AbilityScores;
   id: string;
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
@@ -194,11 +182,11 @@ export type CreatureData = Readonly<{
    */
   name: string;
   raceId: RaceData["id"];
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
-export type Modifier = {
-  data: ModifierData;
+export type StateChange = {
+  data: StateChangeData;
   id: GeneratedId;
   // TODO: 生成されてからの経過ターン、行われた行動数、などの経過情報を一律で持たせる。それ自体を型にしてもいいかも。
 };
@@ -249,7 +237,7 @@ export type IdleCreature = Readonly<
      *   - 「エルフの弓使い」「ゴブリンの戦士」「ケルベロス」など
      */
     name: string;
-    stats?: Partial<Stats>;
+    stats?: Partial<StatModifiers>;
   }
 >;
 
@@ -281,7 +269,7 @@ export type Creature = Readonly<{
   id: GeneratedId;
   job: JobData;
   level: IdleCreature["level"];
-  modifiers: Modifier[];
+  modifiers: StateChange[];
   name: string;
   race: RaceData;
 }>;
