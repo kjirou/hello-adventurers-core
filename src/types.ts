@@ -29,6 +29,9 @@ export type StatTemplate = Readonly<
   | { kind: "reductionRate"; default: number; value: number }
 >;
 
+/**
+ * ステータスデータ定義
+ */
 export type StatData = Readonly<
   {
     id: string;
@@ -64,6 +67,15 @@ export type AbilityScores = Readonly<{
   strength: Extract<StatTemplate, { kind: "integer" }>;
 }>;
 
+/**
+ * ステータス修正群
+ *
+ * - 職業・種族・スキル・装備・状態変化など様々な場所に定義される可能性があり、同じ値を集計して最終的なステータスを算出する
+ * - 集計順により結果が変わってはいけない
+ * - キーは StatData["id"] のいずれかと一致する
+ * - 全ての StatData がここに含まれるわけではない
+ *   - 例えば、Max HP は、最終的にゲーム上で使われる値だがこの値を直接変更することはできない。変更するときは maxHpRate を経由する。
+ */
 export type StatModifiers = Readonly<{
   actionPointsPerTurn: { value: number };
   maxActionPoints: { value: number };
