@@ -11,6 +11,20 @@ export const statsAsConst = [
     range: { min: 0 },
   },
   {
+    id: "agility",
+    kind: "integer",
+    name: "Agility",
+    shortName: "AGI",
+    range: { min: 1, max: 99 },
+  },
+  {
+    id: "intelligence",
+    kind: "integer",
+    name: "Intelligence",
+    shortName: "INT",
+    range: { min: 1, max: 99 },
+  },
+  {
     id: "maxActionPoints",
     kind: "integer",
     name: "Max AP",
@@ -56,6 +70,13 @@ export const statsAsConst = [
     kind: "reductionRate",
     name: "Physical Defense Rate",
     shortName: "PDR",
+  },
+  {
+    id: "strength",
+    kind: "integer",
+    name: "Strength",
+    shortName: "STR",
+    range: { min: 1, max: 99 },
   },
 ] as const satisfies StatData[];
 
