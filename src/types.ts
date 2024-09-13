@@ -78,10 +78,10 @@ export type AbilityScores = Readonly<{
  */
 export type StatModifiers = Readonly<{
   actionPointsPerTurn: { value: number };
-  maxActionPoints: { value: number };
-  maxHpRate: { value: number };
   magicalAttackRate: { value: number };
   magicalDefenseRate: { value: number };
+  maxActionPoints: { value: number };
+  maxHpRate: { value: number };
   physicalAttackRate: { value: number };
   physicalDefenseRate: { value: number };
 }>;
