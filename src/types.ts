@@ -15,21 +15,6 @@ export type RangedNumber = Readonly<
 >;
 
 /**
- * 能力値の雛形
- *
- * - 集計・テキスト化などの振る舞いを規格にしたもの
- * - 同じ能力は合計が可能
- */
-export type StatTemplate = Readonly<
-  | { kind: "chance"; default: number; value: number }
-  | { kind: "integer"; default: number; range: RangedNumber; value: number }
-  | { kind: "negativeFlag"; default: boolean; value: number }
-  | { kind: "positiveFlag"; default: boolean; value: number }
-  | { kind: "rate"; default: number; range: RangedNumber; value: number }
-  | { kind: "reductionRate"; default: number; value: number }
->;
-
-/**
  * ステータスデータ定義
  */
 export type StatData = Readonly<
