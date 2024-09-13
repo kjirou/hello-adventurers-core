@@ -46,6 +46,11 @@ export type StatData = Readonly<
   )
 >;
 
+/**
+ * 主能力値群
+ *
+ * - Stats の概念に含めても良い値群だが、別に扱うことが多いので別途定義する
+ */
 export type AbilityScores = Readonly<{
   agility: { value: number };
   intelligence: { value: number };
@@ -67,6 +72,19 @@ export type StatModifiers = Readonly<{
   magicalDefenseRate: { value: number };
   maxActionPoints: { value: number };
   maxHpRate: { value: number };
+  physicalAttackRate: { value: number };
+  physicalDefenseRate: { value: number };
+}>;
+
+/**
+ * ステータス群
+ */
+export type Stats = Readonly<{
+  actionPointsPerTurn: { value: number };
+  magicalAttackRate: { value: number };
+  magicalDefenseRate: { value: number };
+  maxActionPoints: { value: number };
+  maxHp: { value: number };
   physicalAttackRate: { value: number };
   physicalDefenseRate: { value: number };
 }>;

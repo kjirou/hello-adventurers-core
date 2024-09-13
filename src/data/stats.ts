@@ -82,6 +82,6 @@ export const statsAsConst = [
 
 // TODO: 配列より辞書の方が使いやすそう: https://kasama-chenkaow.medium.com/typescript-convert-array-of-object-to-object-with-id-as-a-key-81d012ca70c5
 
-export type StatId = (typeof statsAsConst)[number]["id"];
+export type StatDataId = (typeof statsAsConst)[number]["id"];
 
 export const stats: StatData[] = statsAsConst;

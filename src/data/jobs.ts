@@ -8,7 +8,10 @@ export const jobsAsConst = [
     description: "",
     name: "Fighter",
     mainExpertiseId: "",
-    stats: {},
+    stats: {
+      maxHpRate: { value: 1.25 },
+      physicalAttackRate: { value: 1.25 },
+    },
   },
 ] as const satisfies JobData[];
 
