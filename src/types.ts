@@ -62,9 +62,9 @@ export type StatData = Readonly<
 >;
 
 export type AbilityScores = Readonly<{
-  agility: Extract<StatTemplate, { kind: "integer" }>;
-  intelligence: Extract<StatTemplate, { kind: "integer" }>;
-  strength: Extract<StatTemplate, { kind: "integer" }>;
+  agility: { value: number };
+  intelligence: { value: number };
+  strength: { value: number };
 }>;
 
 /**
