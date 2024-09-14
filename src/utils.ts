@@ -55,29 +55,21 @@ export const validateNumberInRange = (
   throw new Error("Invalid range");
 };
 
-// type AnyObject<TValue> = { [key: string]: TValue };
-// type StringKeys<T> = {
-//   [K in keyof T]: T[K] extends string | number | symbol ? K : never;
-// }[keyof T];
-// const arrayToKeyObject = <
-//   T extends Record<StringKeys<T>, string | number | symbol>,
-//   TKeyName extends keyof Record<StringKeys<T>, string | number | symbol>,
-// >(
-//   array: T[],
-//   key: TKeyName,
-// ): Record<T[TKeyName], T> =>
-//   Object.fromEntries(array.map((a) => [a[key], a])) as Record<T[TKeyName], T>;
-
-const convertObjectArrayToDictionary = <
-  Element extends Record<KeyPropertyName, string>,
-  KeyPropertyName extends keyof Element = "id",
-  AllKeys = [],
+/**
+ * オブジェクトリストをキーを任意指定した辞書へ変換する
+ */
+export const convertObjectArrayToDictionary = <
+  const Element extends Record<string, any>,
+  KeyPropertyName extends keyof Element,
 >(
   array: Element[],
-  keyPropertyName: KeyPropertyName = "id",
-) => {
-  const dictionary: Record<Element[KeyPropertyName], Element> = {};
+  keyPropertyName: KeyPropertyName,
+): Readonly<Record<(typeof array)[number][KeyPropertyName], Element>> => {
+  const dictionary: any = {};
   for (const element of array) {
+    if (keyPropertyName in element === false) {
+      throw new Error(`The ${element} does not have the key property`);
+    }
     dictionary[element[keyPropertyName]] = element;
   }
   return dictionary;
