@@ -54,3 +54,23 @@ export const validateNumberInRange = (
   }
   throw new Error("Invalid range");
 };
+
+/**
+ * オブジェクトリストをキーを任意指定した辞書へ変換する
+ */
+export const convertObjectArrayToDictionary = <
+  const Element extends Record<string, any>,
+  KeyPropertyName extends keyof Element,
+>(
+  array: Element[],
+  keyPropertyName: KeyPropertyName,
+): Readonly<Record<(typeof array)[number][KeyPropertyName], Element>> => {
+  const dictionary: any = {};
+  for (const element of array) {
+    if (keyPropertyName in element === false) {
+      throw new Error(`The ${element} does not have the key property`);
+    }
+    dictionary[element[keyPropertyName]] = element;
+  }
+  return dictionary;
+};

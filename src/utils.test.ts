@@ -1,6 +1,38 @@
 import type { GetRandom } from "./types";
-import { getRandomInteger, validateNumberInRange } from "./utils";
+import {
+  convertObjectArrayToDictionary,
+  getRandomInteger,
+  validateNumberInRange,
+} from "./utils";
 
+// Tabled Drivened Test にすると型引数が壊れるので、個別にテストケースを書く
+describe("convertObjectArrayToDictionary", () => {
+  test("概ね正しく動く", () => {
+    expect(
+      convertObjectArrayToDictionary(
+        [
+          { id: "a", value: 1 },
+          { id: "b", value: 2 },
+        ],
+        "id",
+      ),
+    ).toStrictEqual({
+      a: { id: "a", value: 1 },
+      b: { id: "b", value: 2 },
+    });
+  });
+  test("指定したキーが存在しない時、エラーを投げる", () => {
+    expect(() => {
+      convertObjectArrayToDictionary(
+        [
+          { id: "a", value: 1 },
+          { idx: "b", value: 2 },
+        ],
+        "id",
+      );
+    }).toThrow();
+  });
+});
 describe("getRandomInteger", () => {
   const testParameters: Array<{
     expected: ReturnType<typeof getRandomInteger>;

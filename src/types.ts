@@ -15,34 +15,78 @@ export type RangedNumber = Readonly<
 >;
 
 /**
- * 能力値の雛形
- *
- * - 集計・テキスト化などの振る舞いを規格にしたもの
- * - 同じ能力は合計が可能
+ * ステータスデータ定義
  */
-export type StatTemplate = Readonly<
-  | { kind: "chance"; default: number; value: number }
-  | { kind: "integer"; default: number; range: RangedNumber; value: number }
-  | { kind: "negativeFlag"; default: boolean; value: number }
-  | { kind: "positiveFlag"; default: boolean; value: number }
-  | { kind: "rate"; default: number; range: RangedNumber; value: number }
-  | { kind: "rateReduction"; default: number; value: number }
+export type StatData = Readonly<
+  {
+    id: string;
+    name: string;
+    shortName: string;
+  } & (
+    | {
+        kind: "chance";
+      }
+    | {
+        kind: "everyFlag";
+      }
+    | {
+        kind: "integer";
+        range: RangedNumber;
+      }
+    | {
+        kind: "someFlag";
+      }
+    | {
+        kind: "rate";
+        range: RangedNumber;
+      }
+    | {
+        kind: "reductionRate";
+      }
+  )
 >;
 
+/**
+ * 主能力値群
+ *
+ * - Stats の概念に含めても良い値群だが、別に扱うことが多いので別途定義する
+ */
 export type AbilityScores = Readonly<{
-  agility: Extract<StatTemplate, { kind: "integer" }>;
-  intelligence: Extract<StatTemplate, { kind: "integer" }>;
-  strength: Extract<StatTemplate, { kind: "integer" }>;
+  agility: { value: number };
+  intelligence: { value: number };
+  strength: { value: number };
 }>;
 
+/**
+ * ステータス修正群
+ *
+ * - 職業・種族・スキル・装備・状態変化など様々な場所に定義される可能性があり、同じ値を集計して最終的なステータスを算出する
+ * - 集計順により結果が変わってはいけない
+ * - キーは StatData["id"] のいずれかと一致する
+ * - 全ての StatData がここに含まれるわけではない
+ *   - 例えば、Max HP は、最終的にゲーム上で使われる値だがこの値を直接変更することはできない。変更するときは maxHpRate を経由する。
+ */
+export type StatModifiers = Readonly<{
+  actionPointsPerTurn: { value: number };
+  magicalAttackRate: { value: number };
+  magicalDefenseRate: { value: number };
+  maxActionPoints: { value: number };
+  maxHpRate: { value: number };
+  physicalAttackRate: { value: number };
+  physicalDefenseRate: { value: number };
+}>;
+
+/**
+ * ステータス群
+ */
 export type Stats = Readonly<{
-  actionPointsPerTurn: Extract<StatTemplate, { kind: "integer" }>;
-  maxActionPoints: Extract<StatTemplate, { kind: "integer" }>;
-  maxHp: Extract<StatTemplate, { kind: "integer" }>;
-  magicalAttack: Extract<StatTemplate, { kind: "integer" }>;
-  magicalDefense: Extract<StatTemplate, { kind: "integer" }>;
-  physicalAttack: Extract<StatTemplate, { kind: "integer" }>;
-  physicalDefense: Extract<StatTemplate, { kind: "integer" }>;
+  actionPointsPerTurn: { value: number };
+  magicalAttackRate: { value: number };
+  magicalDefenseRate: { value: number };
+  maxActionPoints: { value: number };
+  maxHp: { value: number };
+  physicalAttackRate: { value: number };
+  physicalDefenseRate: { value: number };
 }>;
 
 /**
@@ -86,13 +130,14 @@ export type ExpertiseData = Readonly<{
     SkillData["id"],
     SkillData["id"],
   ];
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
  * 職業データ定義
  */
 export type JobData = Readonly<{
+  description: string;
   id: string;
   /**
    * 主専門
@@ -101,7 +146,8 @@ export type JobData = Readonly<{
    * - その職業のクリーチャーは必ずこの専門を持つ
    */
   mainExpertiseId: ExpertiseData["id"];
-  stats?: Partial<Stats>;
+  name: string;
+  stats?: Partial<StatModifiers>;
   /**
    * 副専門群
    *
@@ -120,20 +166,22 @@ export type JobData = Readonly<{
  * 種族データ定義
  */
 export type RaceData = Readonly<{
+  description: string;
   expertiseIds?: ExpertiseData[];
   id: string;
-  stats?: Partial<Stats>;
+  name: string;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
- * 状態修正データ定義
+ * 状態変化データ定義
  *
  * - いわゆるバフ・デバフ
  */
-export type ModifierData = Readonly<{
+export type StateChangeData = Readonly<{
   abilityScores?: AbilityScores;
   id: string;
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
 /**
@@ -149,11 +197,11 @@ export type CreatureData = Readonly<{
    */
   name: string;
   raceId: RaceData["id"];
-  stats?: Partial<Stats>;
+  stats?: Partial<StatModifiers>;
 }>;
 
-export type Modifier = {
-  data: ModifierData;
+export type StateChange = {
+  data: StateChangeData;
   id: GeneratedId;
   // TODO: 生成されてからの経過ターン、行われた行動数、などの経過情報を一律で持たせる。それ自体を型にしてもいいかも。
 };
@@ -204,7 +252,7 @@ export type IdleCreature = Readonly<
      *   - 「エルフの弓使い」「ゴブリンの戦士」「ケルベロス」など
      */
     name: string;
-    stats?: Partial<Stats>;
+    stats?: Partial<StatModifiers>;
   }
 >;
 
@@ -236,7 +284,7 @@ export type Creature = Readonly<{
   id: GeneratedId;
   job: JobData;
   level: IdleCreature["level"];
-  modifiers: Modifier[];
+  modifiers: StateChange[];
   name: string;
   race: RaceData;
 }>;
